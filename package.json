@@ -1,6 +1,6 @@
 {
   "name": "bullseye",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Attach elements onto their target",
   "main": "bullseye.js",
   "scripts": {
