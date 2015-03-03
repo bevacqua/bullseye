@@ -12,15 +12,15 @@ npm install bullseye --save
 bower install bullseye --save
 ```
 
-# `bullseye(element, target, options?)`
+# `bullseye(el, target, options?)`
 
-Position `element` according to the current position of `target`. If the `tracking` option isn't set to `false`, a listener for window resize events will make sure `element` stays well-position when the viewport size changes.
+Position `el` according to the current position of `target`. If the `tracking` option isn't set to `false`, a listener for window resize events will make sure `el` stays well-position when the viewport size changes.
 
-When you call `bullseye(element, target, options?)`, you'll get back a tiny API to interact with the instance.
+When you call `bullseye(el, target, options?)`, you'll get back a tiny API to interact with the instance.
 
 ### `.refresh()`
 
-Refreshes position of `element` according to the current position of `target`.
+Refreshes position of `el` according to the current position of `target`.
 
 ### `.destroy()`
 
