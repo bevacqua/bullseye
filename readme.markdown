@@ -14,7 +14,7 @@ bower install bullseye --save
 
 # `bullseye(element, target, options?)`
 
-Position `element` according to the current position of `target`. If the `tracking` option isn't set to `false`, a listener for window rezize events will make sure `element` stays well-position when the viewport size changes.
+Position `element` according to the current position of `target`. If the `tracking` option isn't set to `false`, a listener for window resize events will make sure `element` stays well-position when the viewport size changes.
 
 When you call `bullseye(element, target, options?)`, you'll get back a tiny API to interact with the instance.
 
