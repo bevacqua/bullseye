@@ -20,6 +20,8 @@ When you call `bullseye(el, target, options?)`, you'll get back a tiny API to in
 
 In order to play well with friends, bullseye won't change the `position` CSS property, but instead leaves it up to you to set the appropriate `position` value on `el`. This way, we don't make it hard for you to set a different `position` value when you need to.
 
+You can set a `caret` option to `true` so that the tracked position will be right below the text selection caret instead of the entire element.
+
 ### `.refresh()`
 
 Refreshes position of `el` according to the current position of `target`.
