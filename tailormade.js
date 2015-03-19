@@ -39,7 +39,6 @@ var ff = window.mozInnerScreenX !== null && window.mozInnerScreenX !== void 0;
 function tailormade (el, options) {
   var throttledRefresh = throttle(refresh, 30);
   var o = options || {};
-  if (o.update === void 0) { o.update = autosize; }
   if (o.positions === void 0) { o.positions = ['start', 'end', 'all']; }
 
   bind();
