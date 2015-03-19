@@ -22,7 +22,7 @@ function bullseye (el, target, options) {
   };
 
   function update (readings) {
-    throttledPosition(readings);
+    position(readings);
   }
 
   function position (readings) {

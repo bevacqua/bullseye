@@ -1,4 +1,4 @@
-# 1.2.5 Arena Net
+# 1.2.6 Arena Net
 
 - Allow `bullseye` to effectively track `<textarea>` elements as well
 

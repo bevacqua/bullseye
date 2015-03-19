@@ -7,7 +7,6 @@ function throttle (fn, boundary) {
     if (timer) {
       return;
     }
-    var args = arguments;
     unbound();
 
     function unbound () {
@@ -17,7 +16,7 @@ function throttle (fn, boundary) {
       var now = Date.now();
       if (now > next) {
         last = now;
-        fn.apply(this, args);
+        fn();
       } else {
         timer = setTimeout(unbound, next - now);
       }
