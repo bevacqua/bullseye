@@ -1,6 +1,6 @@
 {
   "name": "bullseye",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Attach elements onto their target",
   "main": "dist/bullseye.js",
   "homepage": "https://github.com/bevacqua/bullseye",
