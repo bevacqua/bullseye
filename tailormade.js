@@ -49,6 +49,9 @@ function tailormade (el, options) {
   };
 
   function refresh () {
+    if (o.sleeping) {
+      return;
+    }
     var p = sell(el);
     var context = prepare();
     var readings = {};

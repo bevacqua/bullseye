@@ -8,7 +8,8 @@ function bullseye (el, target, options) {
   var o = options || {};
   var destroyed = false;
   var throttledPosition = throttle(position, 30);
-  var tailor = o.caret && tailormade(target, { update: update, positions: ['start'] });
+  var tailorOptions = { update: update, positions: ['start'] };
+  var tailor = o.caret && tailormade(target, tailorOptions);
 
   position();
 
@@ -18,8 +19,13 @@ function bullseye (el, target, options) {
 
   return {
     refresh: position,
-    destroy: destroy
+    destroy: destroy,
+    sleep: sleep
   };
+
+  function sleep () {
+    tailorOptions.sleeping = true;
+  }
 
   function update (readings) {
     position(readings);
@@ -30,6 +36,7 @@ function bullseye (el, target, options) {
       throw new Error('Bullseye can\'t refresh after being destroyed. Create another instance instead.');
     }
     if (tailor && !readings) {
+      tailorOptions.sleeping = false;
       tailor.refresh(); return;
     }
     var bounds = target.getBoundingClientRect();
