@@ -45,27 +45,27 @@ function tailormade (el, options) {
   bind();
 
   return {
+    read: readPosition,
     refresh: throttledRefresh,
     destroy: destroy
   };
+
+  function noop () {}
+  function readPosition () { return (textInput ? coordsText : coordsHTML)(); }
 
   function refresh () {
     if (o.sleeping) {
       return;
     }
-    if (textInput) {
-      return refreshText();
-    }
-    return o.update(coordsHTML());
+    return (o.update || noop)(readPosition());
   }
 
-  function refreshText () {
+  function coordsText () {
     var p = sell(el);
     var context = prepare();
-    var readings = coordsText(context, p.start);
-
+    var readings = readTextCoords(context, p.start);
     doc.body.removeChild(context.mirror);
-    o.update(readings);
+    return readings;
   }
 
   function coordsHTML () {
@@ -92,6 +92,27 @@ function tailormade (el, options) {
       }
     }
     return { x: 0, y: 0 };
+  }
+
+  function readTextCoords (context, p) {
+    var rest = doc.createElement('span');
+    var mirror = context.mirror;
+    var computed = context.computed;
+
+    write(mirror, read(el).substring(0, p));
+
+    if (el.tagName === 'INPUT') {
+      mirror.textContent = mirror.textContent.replace(/\s/g, '\u00a0');
+    }
+
+    write(rest, read(el).substring(p) || '.');
+
+    mirror.appendChild(rest);
+
+    return {
+      x: rest.offsetLeft + parseInt(computed['borderLeftWidth']),
+      y: rest.offsetTop + parseInt(computed['borderTopWidth'])
+    };
   }
 
   function read (el) {
@@ -134,27 +155,6 @@ function tailormade (el, options) {
     } else {
       el.innerHTML = value;
     }
-  }
-
-  function coordsText (context, p) {
-    var rest = doc.createElement('span');
-    var mirror = context.mirror;
-    var computed = context.computed;
-
-    write(mirror, read(el).substring(0, p));
-
-    if (el.tagName === 'INPUT') {
-      mirror.textContent = mirror.textContent.replace(/\s/g, '\u00a0');
-    }
-
-    write(rest, read(el).substring(p) || '.');
-
-    mirror.appendChild(rest);
-
-    return {
-      x: rest.offsetLeft + parseInt(computed['borderLeftWidth']),
-      y: rest.offsetTop + parseInt(computed['borderTopWidth'])
-    };
   }
 
   function bind (remove) {

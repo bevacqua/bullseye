@@ -1,3 +1,9 @@
+# 1.4.0 Raw Meat
+
+- Made `target` an optional argument
+- Introduced `autoupdateToCaret` option
+- Exposed `.read` method
+
 # 1.3.0 Bull Run
 
 - Allow `bullseye` to effectively track `contentEditable` DOM elements at will

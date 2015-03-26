@@ -5,20 +5,28 @@ var throttle = require('./throttle');
 var tailormade = require('./tailormade');
 
 function bullseye (el, target, options) {
-  var o = options || {};
+  var o = options;
+
+  if (arguments.length === 2) {
+    o = target;
+    target = el;
+  }
+  if (!o) { o = {}; }
+
   var destroyed = false;
-  var throttledPosition = throttle(position, 30);
-  var tailorOptions = { update: update };
+  var throttledWrite = throttle(write, 30);
+  var tailorOptions = { update: o.autoupdateToCaret !== false && update };
   var tailor = o.caret && tailormade(target, tailorOptions);
 
-  position();
+  write();
 
   if (o.tracking !== false) {
-    crossvent.add(window, 'resize', throttledPosition);
+    crossvent.add(window, 'resize', throttledWrite);
   }
 
   return {
-    refresh: position,
+    read: readNull,
+    refresh: write,
     destroy: destroy,
     sleep: sleep
   };
@@ -27,11 +35,29 @@ function bullseye (el, target, options) {
     tailorOptions.sleeping = true;
   }
 
-  function update (readings) {
-    position(readings);
+  function readNull () { return read(); }
+
+  function read (readings) {
+    var bounds = target.getBoundingClientRect();
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    if (tailor) {
+      readings = tailor.read();
+      return {
+        x: (readings.absolute ? 0 : bounds.left) + readings.x,
+        y: (readings.absolute ? 0 : bounds.top) + scrollTop + readings.y + 20
+      };
+    }
+    return {
+      x: bounds.left,
+      y: bounds.top + scrollTop
+    };
   }
 
-  function position (readings) {
+  function update (readings) {
+    write(readings);
+  }
+
+  function write (readings) {
     if (destroyed) {
       throw new Error('Bullseye can\'t refresh after being destroyed. Create another instance instead.');
     }
@@ -39,20 +65,17 @@ function bullseye (el, target, options) {
       tailorOptions.sleeping = false;
       tailor.refresh(); return;
     }
-    var bounds = target.getBoundingClientRect();
-    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-    if (readings) {
-      el.style.top = (readings.absolute ? 0 : bounds.top) + scrollTop + readings.y + 20 + 'px';
-      el.style.left = (readings.absolute ? 0 : bounds.left) + readings.x + 'px';
-    } else {
-      el.style.top  = bounds.top + scrollTop + target.offsetHeight + 'px';
-      el.style.left = bounds.left + 'px';
+    var p = read(readings);
+    if (!tailor && target !== el) {
+      p.y += target.offsetHeight;
     }
+    el.style.left = p.x + 'px';
+    el.style.top = p.y + 'px';
   }
 
   function destroy () {
     if (tailor) { tailor.destroy(); }
-    crossvent.remove(window, 'resize', throttledPosition);
+    crossvent.remove(window, 'resize', throttledWrite);
     destroyed = true;
   }
 }
