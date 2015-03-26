@@ -8,7 +8,7 @@ function bullseye (el, target, options) {
   var o = options || {};
   var destroyed = false;
   var throttledPosition = throttle(position, 30);
-  var tailorOptions = { update: update, positions: ['start'] };
+  var tailorOptions = { update: update };
   var tailor = o.caret && tailormade(target, tailorOptions);
 
   position();
@@ -42,8 +42,8 @@ function bullseye (el, target, options) {
     var bounds = target.getBoundingClientRect();
     var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
     if (readings) {
-      el.style.top = bounds.top + scrollTop + readings.start.y + 20 + 'px';
-      el.style.left = bounds.left + readings.start.x + 'px';
+      el.style.top = (readings.absolute ? 0 : bounds.top) + scrollTop + readings.y + 20 + 'px';
+      el.style.left = (readings.absolute ? 0 : bounds.left) + readings.x + 'px';
     } else {
       el.style.top  = bounds.top + scrollTop + target.offsetHeight + 'px';
       el.style.left = bounds.left + 'px';

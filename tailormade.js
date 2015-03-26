@@ -33,13 +33,14 @@ var props = [
   'letterSpacing',
   'wordSpacing'
 ];
+var win = global;
 var doc = document;
-var ff = window.mozInnerScreenX !== null && window.mozInnerScreenX !== void 0;
+var ff = win.mozInnerScreenX !== null && win.mozInnerScreenX !== void 0;
 
 function tailormade (el, options) {
+  var textInput = el.tagName === 'INPUT' || el.tagName === 'TEXTAREA';
   var throttledRefresh = throttle(refresh, 30);
   var o = options || {};
-  if (o.positions === void 0) { o.positions = ['start', 'end', 'all']; }
 
   bind();
 
@@ -52,24 +53,53 @@ function tailormade (el, options) {
     if (o.sleeping) {
       return;
     }
+    if (textInput) {
+      return refreshText();
+    }
+    return o.update(coordsHTML());
+  }
+
+  function refreshText () {
     var p = sell(el);
     var context = prepare();
-    var readings = {};
-
-    if (o.positions.indexOf('start') !== -1) { add('start', p.start); }
-    if (o.positions.indexOf('end') !== -1) { add('end', p.end); }
-    if (o.positions.indexOf('all') !== -1) { add('all', el.value.length); }
+    var readings = coordsText(context, p.start);
 
     doc.body.removeChild(context.mirror);
     o.update(readings);
+  }
 
-    function add (name, p) {
-      readings[name] = coords(context, p);
+  function coordsHTML () {
+    var sel = (o.getSelection || win.getSelection)();
+    if (sel.rangeCount) {
+      var range = sel.getRangeAt(0);
+      var needsToWorkAroundNewlineBug = range.startContainer.nodeName === 'P' && range.startOffset === 0;
+      if (needsToWorkAroundNewlineBug) {
+        return {
+          x: range.startContainer.offsetLeft,
+          y: range.startContainer.offsetTop,
+          absolute: true
+        };
+      }
+      if (range.getClientRects) {
+        var rects = range.getClientRects();
+        if (rects.length > 0) {
+          return {
+            x: rects[0].left,
+            y: rects[0].top,
+            absolute: true
+          };
+        }
+      }
     }
+    return { x: 0, y: 0 };
+  }
+
+  function read (el) {
+    return textInput ? el.value : el.innerHTML;
   }
 
   function prepare () {
-    var computed = window.getComputedStyle ? getComputedStyle(el) : el.currentStyle;
+    var computed = win.getComputedStyle ? getComputedStyle(el) : el.currentStyle;
     var mirror = doc.createElement('div');
     var style = mirror.style;
 
@@ -98,18 +128,27 @@ function tailormade (el, options) {
     }
   }
 
-  function coords (context, p) {
+  function write (el, value) {
+    if (textInput) {
+      el.textContent = value;
+    } else {
+      el.innerHTML = value;
+    }
+  }
+
+  function coordsText (context, p) {
     var rest = doc.createElement('span');
     var mirror = context.mirror;
     var computed = context.computed;
 
-    mirror.textContent = el.value.substring(0, p);
+    write(mirror, read(el).substring(0, p));
 
     if (el.tagName === 'INPUT') {
       mirror.textContent = mirror.textContent.replace(/\s/g, '\u00a0');
     }
 
-    rest.textContent = el.value.substring(p) || '.';
+    write(rest, read(el).substring(p) || '.');
+
     mirror.appendChild(rest);
 
     return {
