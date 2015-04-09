@@ -6,9 +6,13 @@ var tailormade = require('./tailormade');
 
 function bullseye (el, target, options) {
   var o = options;
+  var domTarget = target && target.tagName;
 
-  if (arguments.length === 2) {
+  if (domTarget === false && arguments.length === 2) {
     o = target;
+  }
+
+  if (domTarget === false) {
     target = el;
   }
   if (!o) { o = {}; }
