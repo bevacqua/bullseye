@@ -22,7 +22,16 @@ Option              | Description
 `tracking`          | When not `false`, window resize events will update the position for `el`
 `autoupdateToCaret` | Set to `false` if you don't want automatic position updates when `caret` is set to `true`
 
-When you call `bullseye(el, target, options?)`, you'll get back a tiny API to interact with the instance.
+When you call `bullseye(el, target?, options?)`, you'll get back a tiny API to interact with the instance.
+
+If `target` isn't provided, it'll match `el`. Bullseye supports operator overloading.
+
+```js
+bullseye(el)
+bullseye(el, options)
+bullseye(el, target)
+bullseye(el, target, options)
+```
 
 ### `.refresh()`
 
