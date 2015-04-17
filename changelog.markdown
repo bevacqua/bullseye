@@ -1,5 +1,6 @@
-# 1.4.1 Raw Meat
+# 1.4.2 Content Rating
 
+- Fixed a bug in operation overloading
 
 # 1.4.0 Raw Meat
 
