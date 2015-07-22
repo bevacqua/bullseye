@@ -2,6 +2,7 @@
 
 var sell = require('sell');
 var crossvent = require('crossvent');
+var getSelection = require('seleccion');
 var throttle = require('./throttle');
 var props = [
   'direction',
@@ -69,7 +70,7 @@ function tailormade (el, options) {
   }
 
   function coordsHTML () {
-    var sel = (o.getSelection || win.getSelection)();
+    var sel = getSelection();
     if (sel.rangeCount) {
       var range = sel.getRangeAt(0);
       var needsToWorkAroundNewlineBug = range.startContainer.nodeName === 'P' && range.startOffset === 0;

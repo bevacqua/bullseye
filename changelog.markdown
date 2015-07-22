@@ -1,3 +1,7 @@
+# 1.4.4 Short Sell
+
+- Use `seleccion` polyfill
+
 # 1.4.3 Content Rating
 
 - Fixed a bug in operation overloading
