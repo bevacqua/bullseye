@@ -2,8 +2,9 @@
 
 var sell = require('sell');
 var crossvent = require('crossvent');
-var getSelection = require('seleccion');
+var seleccion = require('seleccion');
 var throttle = require('./throttle');
+var getSelection = seleccion.get;
 var props = [
   'direction',
   'boxSizing',

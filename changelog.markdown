@@ -1,4 +1,4 @@
-# 1.4.4 Short Sell
+# 1.4.6 Short Sell
 
 - Use `seleccion` polyfill
 
