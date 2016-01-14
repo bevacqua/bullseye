@@ -16,11 +16,12 @@ bower install bullseye --save
 
 Position `el` according to the current position of `target`. In order to play well with friends, bullseye won't change the `position` CSS property, but instead leaves it up to you to set the appropriate `position` value on `el`. This way, we don't make it hard for you to set a different `position` value when you need to.
 
-Option              | Description
---------------------|----------------------------------------------------------------------------------------------------------------------
-`caret`             | When `true`, the tracked position will be right below the text selection caret instead of below the entire `target` element
-`tracking`          | When not `false`, window resize events will update the position for `el`
-`autoupdateToCaret` | Set to `false` if you don't want automatic position updates when `caret` is set to `true`
+Option                  | Description
+------------------------|----------------------------------------------------------------------------------------------------------------------
+`caret`                 | When `true`, the tracked position will be right below the text selection caret instead of below the entire `target` element
+`tracking`              | When not `false`, window resize events will update the position for `el`
+`autoupdateToCaret`     | Set to `false` if you don't want automatic position updates when `caret` is set to `true`
+`horizontalAlignment`   | Determines which part of the target you want the position of: left (default), center, right
 
 When you call `bullseye(el, target?, options?)`, you'll get back a tiny API to interact with the instance.
 

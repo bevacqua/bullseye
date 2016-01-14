@@ -15,6 +15,9 @@ function bullseye (el, target, options) {
     target = el;
   }
   if (!o) { o = {}; }
+  if(!o.horizontalAlignment) {
+    o.horizontalAlignment = 'left';
+  }
 
   var destroyed = false;
   var throttledWrite = throttle(write, 30);
@@ -43,17 +46,28 @@ function bullseye (el, target, options) {
   function read (readings) {
     var bounds = target.getBoundingClientRect();
     var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    var location;
     if (tailor) {
       readings = tailor.read();
-      return {
+      location = {
         x: (readings.absolute ? 0 : bounds.left) + readings.x,
         y: (readings.absolute ? 0 : bounds.top) + scrollTop + readings.y + 20
       };
     }
-    return {
-      x: bounds.left,
-      y: bounds.top + scrollTop
-    };
+    else {
+      location = {
+        x: bounds.left,
+        y: bounds.top + scrollTop
+      };
+    }
+    if(o.horizontalAlignment == 'center') {
+      location.x += (bounds.width || target.offsetWidth) / 2;
+    }
+    else if(o.horizontalAlignment == 'right') {
+      location.x += bounds.width || target.offsetWidth;
+    }
+    
+    return location;
   }
 
   function update (readings) {
@@ -71,6 +85,15 @@ function bullseye (el, target, options) {
     var p = read(readings);
     if (!tailor && target !== el) {
       p.y += target.offsetHeight;
+    }
+    if(o.horizontalAlignment == 'center') {
+      p.x -= el.offsetWidth / 2;
+      if(p.x < 0) {
+        p.x = 0;
+      }
+    }
+    if(o.horizontalAlignment == 'right') {
+      p.x -= el.offsetWidth;
     }
     el.style.left = p.x + 'px';
     el.style.top = p.y + 'px';
