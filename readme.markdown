@@ -21,6 +21,7 @@ Option              | Description
 `caret`             | When `true`, the tracked position will be right below the text selection caret instead of below the entire `target` element
 `tracking`          | When not `false`, window resize events will update the position for `el`
 `autoupdateToCaret` | Set to `false` if you don't want automatic position updates when `caret` is set to `true`
+`context`           | Set to a DOM element if you want height readings to be relative to that element plus its height
 
 When you call `bullseye(el, target?, options?)`, you'll get back a tiny API to interact with the instance.
 

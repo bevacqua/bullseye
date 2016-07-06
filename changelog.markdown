@@ -1,3 +1,7 @@
+# 1.4.7 Contextual Menu
+
+- Added `context` option
+
 # 1.4.6 Short Sell
 
 - Use `seleccion` polyfill

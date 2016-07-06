@@ -72,8 +72,9 @@ function bullseye (el, target, options) {
     if (!tailor && target !== el) {
       p.y += target.offsetHeight;
     }
+    var context = o.context;
     el.style.left = p.x + 'px';
-    el.style.top = p.y + 'px';
+    el.style.top = (context ? context.offsetHeight : p.y) + 'px';
   }
 
   function destroy () {
