@@ -43,15 +43,16 @@ function bullseye (el, target, options) {
   function read (readings) {
     var bounds = target.getBoundingClientRect();
     var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    var scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft;
     if (tailor) {
       readings = tailor.read();
       return {
-        x: (readings.absolute ? 0 : bounds.left) + readings.x,
+        x: (readings.absolute ? 0 : bounds.left) + scrollLeft + readings.x,
         y: (readings.absolute ? 0 : bounds.top) + scrollTop + readings.y + 20
       };
     }
     return {
-      x: bounds.left,
+      x: bounds.left + scrollLeft,
       y: bounds.top + scrollTop
     };
   }
