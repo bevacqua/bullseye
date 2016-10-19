@@ -36,7 +36,7 @@ var props = [
   'wordSpacing'
 ];
 var win = global;
-var doc = document;
+var doc = global.document;
 var ff = win.mozInnerScreenX !== null && win.mozInnerScreenX !== void 0;
 
 function tailormade (el, options) {
